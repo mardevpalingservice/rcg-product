@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>RACING · Product Focus BA Dashboard</title>
+<style>
+:root{--ink:#122A46;--ink-2:#18395E;--navy:#1B4F8A;--sky:#1C7FC7;--teal:#0C8577;--amber:#D97F0A;--garnet:#C13B4A;--garnet-soft:#FCE3E6;
+  --line:#E1E7F0;--text:#1A2233;--soft:#5B6478;--faint:#8A93A6;--paper:#F5F8FC;
+  --display:Georgia,'Iowan Old Style','Palatino Linotype',serif;--body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:var(--body);color:var(--text);background:radial-gradient(900px 500px at 85% -10%,rgba(28,127,199,.35),transparent 60%),
+  radial-gradient(700px 400px at -10% 110%,rgba(12,133,119,.25),transparent 60%),linear-gradient(160deg,#0E2238,#18395E 70%,#1E4A78);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.card{background:#fff;border-radius:14px;box-shadow:0 24px 60px rgba(5,15,30,.45);width:min(520px,100%);overflow:hidden}
+.card.shake{animation:shake .45s cubic-bezier(.36,.07,.19,.97)}
+@keyframes shake{10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-8px)}40%,60%{transform:translateX(8px)}}
+.head{background:linear-gradient(135deg,var(--ink),var(--ink-2));color:#fff;padding:22px 26px 18px}
+.kicker{font-size:11px;letter-spacing:.1em;color:#9CC4EC;font-weight:700}
+h1{font-family:var(--display);font-size:22px;margin:6px 0 2px;line-height:1.25}
+.sub{font-size:13px;color:#C9D7E8}
+.conf{display:inline-block;margin-top:12px;font-size:10.5px;font-weight:800;letter-spacing:.14em;color:#fff;background:var(--garnet);padding:4px 10px;border-radius:4px}
+.body{padding:20px 26px 24px}
+.stmt{background:#FBF6EC;border:1px solid #EBD9B4;border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.55;color:#4A3B1A;max-height:210px;overflow:auto}
+.stmt b{color:#2E2408}
+.stmt ul{margin:6px 0 0;padding-left:18px}
+.agree{display:flex;gap:10px;align-items:flex-start;margin:14px 0 16px;font-size:13px;cursor:pointer;line-height:1.4}
+.agree input{width:18px;height:18px;margin:1px 0 0;flex:0 0 auto;accent-color:var(--navy)}
+label.f{display:block;font-size:11.5px;font-weight:700;color:var(--soft);margin:12px 0 5px;letter-spacing:.03em}
+.inp{display:flex;border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden}
+.inp:focus-within{border-color:var(--navy);box-shadow:0 0 0 3px rgba(27,79,138,.12)}
+.inp input{flex:1;border:0;padding:11px 12px;font-size:14px;outline:none;font-family:inherit;min-width:0;background:transparent}
+.inp button{border:0;background:#F1F5FA;color:var(--soft);font-size:12px;font-weight:700;padding:0 14px;cursor:pointer}
+input:disabled{background:#F3F5F8;cursor:not-allowed}
+.inp.dis{background:#F3F5F8}
+.err{min-height:20px;margin-top:10px;font-size:12.5px;color:var(--garnet);font-weight:600}
+.go{width:100%;margin-top:6px;padding:12px;border:0;border-radius:8px;background:var(--navy);color:#fff;font-size:14.5px;font-weight:700;cursor:pointer}
+.go:disabled{background:#AEBBCB;cursor:not-allowed}
+.foot{font-size:11px;color:var(--faint);text-align:center;margin-top:14px}
+#loader{position:fixed;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;color:#fff;z-index:20;
+  background:linear-gradient(160deg,#0E2238,#18395E 70%,#1E4A78)}
+#loader .sp{width:38px;height:38px;border-radius:50%;border:3px solid rgba(255,255,255,.25);border-top-color:#fff;animation:spin .8s linear infinite}
+#loader .t{font-size:14px;font-weight:600}#loader .s{font-size:12px;color:#AFC4DC}
+@keyframes spin{to{transform:rotate(360deg)}}
+#frame{position:fixed;inset:0;width:100%;height:100%;border:0;display:none;background:#F5F8FC}
+@media(max-width:480px){.head,.body{padding-left:18px;padding-right:18px}h1{font-size:19px}}
+</style>
+</head>
+<body>
+<main class="card" id="card" aria-labelledby="ttl">
+  <div class="head">
+    <div class="kicker">RACING · PRODUCT FOCUS</div>
+    <h1 id="ttl">Product Focus BA Dashboard — Akses Terbatas</h1>
+    <div class="sub">Sell Out per SKU · BA · Toko</div>
+    <span class="conf">STRICTLY CONFIDENTIAL</span>
+  </div>
+  <div class="body">
+    <div class="stmt" id="stmt" tabindex="0" aria-label="Pernyataan Kerahasiaan">
+      <b>Pernyataan Kerahasiaan</b><br>
+      Dashboard ini berisi <b>data internal yang sangat rahasia</b> (Sell Out per SKU, per BA, dan per toko).
+      <ul>
+        <li>Akses hanya untuk <b>GACOR, RSBL, SEL, dan Commercial Team</b>.</li>
+        <li><b>Tidak boleh dibagikan ke T&amp;DS maupun Admin.</b> Bila perlu, informasi disampaikan hanya lewat capture/screenshot yang relevan — tanpa membagikan link atau akses.</li>
+        <li>Saya tidak akan membagikan, menyalin, atau meneruskan link, password, maupun isi dashboard kepada pihak mana pun.</li>
+        <li>Setiap login dicatat (email, tanggal, jam).</li>
+      </ul>
+    </div>
+    <label class="agree"><input type="checkbox" id="agree"><span>Saya mengerti dan setuju dengan pernyataan kerahasiaan di atas.</span></label>
+    <form id="form" autocomplete="on" novalidate>
+      <label class="f" for="email">EMAIL PERUSAHAAN</label>
+      <div class="inp dis" id="emailBox"><input id="email" type="email" inputmode="email" autocomplete="username" maxlength="254" placeholder="nama@paracorpgroup.com" disabled></div>
+      <label class="f" for="pw">PASSWORD</label>
+      <div class="inp dis" id="pwBox"><input id="pw" type="password" autocomplete="current-password" placeholder="••••••••••" disabled><button type="button" id="eye" disabled aria-label="Lihat password">Lihat</button></div>
+      <div class="err" id="err" role="alert" aria-live="assertive"></div>
+      <button class="go" id="go" type="submit" disabled>Masuk ke Dashboard</button>
+    </form>
+    <div class="foot">Sesi berakhir saat tab/browser ditutup.</div>
+  </div>
+</main>
+<div id="loader" role="status"><div class="sp"></div><div class="t" id="lt">Memverifikasi…</div><div class="s" id="ls"></div></div>
+<iframe id="frame" title="Product Focus BA Dashboard"></iframe>
+<script>
+'use strict';
+(function(){
+const COMPANY_DOMAIN = 'paracorpgroup.com';
+const SESSION_KEY = 'pfd_session_v2';          // different from the BA Sell Out dashboard key
+const FAIL_KEY = 'pfd_fail_v2';
+const MAGIC_ACCESS = 'PFD2', MAGIC_MONTH = 'PFDM', ITER = 600000;
+const LOAD_TIMEOUT = 180000, LOG_TIMEOUT = 4000;
+const $ = id => document.getElementById(id);
+const enc = new TextEncoder();
+let busy = false, frameUrl = null;
+
+class GateError extends Error{ constructor(kind, msg){ super(msg); this.kind = kind; } }
+function b64ToBytes(s){ const b = atob(s); const u = new Uint8Array(b.length); for(let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+function magicOf(u){ return String.fromCharCode(u[0], u[1], u[2], u[3]); }
+async function fetchBytes(url, opts){
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), LOAD_TIMEOUT);
+  let r;
+  try { r = await fetch(url, Object.assign({signal: ctl.signal}, opts || {})); }
+  catch(e){ throw new GateError('network', e.name === 'AbortError' ? 'Waktu muat habis (180 detik). Cek koneksi lalu coba lagi.' : 'Gagal terhubung ke server. Cek koneksi internet.'); }
+  finally { clearTimeout(t); }
+  if(!r.ok) throw new GateError('network', r.status === 404 ? 'File data tidak ditemukan (404). Hubungi admin dashboard.' : 'Server mengembalikan HTTP ' + r.status + '.');
+  return new Uint8Array(await r.arrayBuffer());
+}
+async function gunzipText(u){ const ds = new DecompressionStream('gzip'); return await new Response(new Blob([u]).stream().pipeThrough(ds)).text(); }
+async function openAccess(bytes, password){
+  if(bytes.length < 48 || magicOf(bytes) !== MAGIC_ACCESS) throw new GateError('format', 'Format file akses tidak valid. Hubungi admin dashboard.');
+  const salt = bytes.slice(4, 20), iv = bytes.slice(20, 32), ct = bytes.slice(32);
+  const base = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name: 'PBKDF2', hash: 'SHA-256', salt, iterations: ITER}, base, {name: 'AES-GCM', length: 256}, false, ['decrypt']);
+  let pt;
+  try { pt = await crypto.subtle.decrypt({name: 'AES-GCM', iv, additionalData: enc.encode(MAGIC_ACCESS)}, key, ct); }
+  catch(e){ throw new GateError('password', 'Incorrect Password'); }
+  const obj = JSON.parse(new TextDecoder().decode(pt));
+  if(obj.v !== 2 || !obj.dataKey || !Array.isArray(obj.months)) throw new GateError('format', 'Isi file akses tidak dikenali.');
+  return obj;
+}
+async function dataKeyFrom(b64){ return crypto.subtle.importKey('raw', b64ToBytes(b64), 'AES-GCM', false, ['decrypt']); }
+async function openMonth(bytes, key, month){
+  if(bytes.length < 32 || magicOf(bytes) !== MAGIC_MONTH) throw new GateError('format', 'Format file data bulan ' + month + ' tidak valid.');
+  let gz;
+  try { gz = await crypto.subtle.decrypt({name: 'AES-GCM', iv: bytes.slice(4, 16), additionalData: enc.encode(MAGIC_MONTH + ':' + month)}, key, bytes.slice(16)); }
+  catch(e){ throw new GateError('format', 'Data bulan ' + month + ' tidak cocok dengan kunci akses. Hubungi admin (jalankan verify).'); }
+  return await gunzipText(new Uint8Array(gz));
+}
+function validEmail(e){ return e.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+function isCompany(e){ return e.toLowerCase().endsWith('@' + COMPANY_DOMAIN); }
+function fails(){ try { const now = Date.now(); return (JSON.parse(localStorage.getItem(FAIL_KEY) || '[]')).filter(t => now - t < 15*60000); } catch(e){ return []; } }
+function addFail(){ try { const f = fails(); f.push(Date.now()); localStorage.setItem(FAIL_KEY, JSON.stringify(f)); } catch(e){} }
+function clearFails(){ try { localStorage.removeItem(FAIL_KEY); } catch(e){} }
+function sessionGet(){ try { const s = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); return s && s.dataKey && Array.isArray(s.months) ? s : null; } catch(e){ return null; } }
+function sessionSet(s){ try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch(e){} }
+function showErr(msg){ $('err').textContent = msg; const c = $('card'); c.classList.remove('shake'); void c.offsetWidth; c.classList.add('shake'); }
+function loader(on, t, s){ $('loader').style.display = on ? 'flex' : 'none'; if(t) $('lt').textContent = t; $('ls').textContent = s || ''; }
+async function sendLog(token, email){
+  // fire-and-forget, fail-open: never blocks or breaks login
+  try {
+    const cfg = await (await fetch('access-config.json', {cache: 'no-store'})).json();
+    if(!cfg || !cfg.endpoint) return;
+    const ctl = new AbortController(); setTimeout(() => ctl.abort(), LOG_TIMEOUT);
+    await fetch(cfg.endpoint, {method: 'POST', mode: 'no-cors', signal: ctl.signal, headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify({action: 'log', token, email})});
+  } catch(e){ /* ignored on purpose */ }
+}
+
+// ---------------- form state
+function syncForm(){
+  const on = $('agree').checked;
+  ['email', 'pw', 'eye'].forEach(id => $(id).disabled = !on || busy);
+  $('emailBox').classList.toggle('dis', !on); $('pwBox').classList.toggle('dis', !on);
+  $('go').disabled = !(on && $('email').value.trim() && $('pw').value) || busy;
+}
+$('agree').addEventListener('change', syncForm);
+$('email').addEventListener('input', () => { $('err').textContent = ''; syncForm(); });
+$('pw').addEventListener('input', () => { $('err').textContent = ''; syncForm(); });
+$('eye').addEventListener('click', () => { const p = $('pw'), show = p.type === 'password'; p.type = show ? 'text' : 'password'; $('eye').textContent = show ? 'Sembunyi' : 'Lihat'; $('eye').setAttribute('aria-label', show ? 'Sembunyikan password' : 'Lihat password'); });
+
+$('form').addEventListener('submit', async ev => {
+  ev.preventDefault();
+  if(busy || $('go').disabled) return;
+  const email = $('email').value.trim().toLowerCase(), pw = $('pw').value;
+  if(!validEmail(email)){ showErr('Email tidak valid.'); return; }
+  const f = fails();
+  if(f.length >= 5){ const wait = Math.ceil((15*60000 - (Date.now() - f[0])) / 60000); showErr('Terlalu banyak percobaan gagal. Coba lagi dalam ' + wait + ' menit.'); return; }
+  busy = true; syncForm(); loader(true, 'Memverifikasi…');
+  try {
+    const bytes = await fetchBytes('data/access.enc', {cache: 'no-store'});
+    const acc = await openAccess(bytes, pw);
+    if(!isCompany(email)){ sendLog(acc.logToken, email); throw new GateError('email', 'Hanya email perusahaan (@' + COMPANY_DOMAIN + ') yang diizinkan.'); }
+    clearFails();
+    sendLog(acc.logToken, email);
+    if(!acc.months.length) throw new GateError('format', 'Belum ada data bulan yang dipublikasikan.');
+    const s = {email, dataKey: acc.dataKey, months: acc.months, defaultMonth: acc.defaultMonth || acc.months[acc.months.length - 1].id, t: Date.now()};
+    sessionSet(s);
+    $('pw').value = '';
+    await openDashboard(s);
+  } catch(e){
+    loader(false); busy = false; syncForm();
+    if(e.kind === 'password'){ addFail(); showErr('Incorrect Password'); }
+    else showErr(e.message || 'Terjadi kesalahan.');
+    if(!(e instanceof GateError)) console.error(e);
+  }
+});
+
+// ---------------- host API used by the dashboard iframe
+async function openDashboard(s){
+  loader(true, 'Memuat dashboard…', 'Mengunduh & mendekripsi data ' + labelOf(s, s.defaultMonth));
+  const key = await dataKeyFrom(s.dataKey);
+  const cache = new Map();
+  async function monthHtml(id){
+    if(!s.months.some(m => m.id === id)) throw new GateError('format', 'Bulan ' + id + ' tidak tersedia.');
+    const bytes = await fetchBytes('data/' + id + '.enc', {cache: 'no-cache'});
+    return await openMonth(bytes, key, id);
+  }
+  window.PFD_HOST = {
+    months: s.months.slice(), defaultMonth: s.defaultMonth, email: s.email,
+    async getPayload(id){
+      if(cache.has(id)) return cache.get(id);
+      const p = (async () => {
+        const html = await monthHtml(id);
+        const m = html.match(/<script type="application\/json" id="pfd-data">([\s\S]*?)<\/script>/);
+        if(!m) throw new Error('Paket data bulan ' + id + ' tidak ditemukan');
+        return JSON.parse(m[1]);
+      })();
+      cache.set(id, p);
+      p.catch(() => cache.delete(id));
+      return p;
+    },
+    onReady(){ loader(false); $('frame').style.display = 'block'; $('card').style.display = 'none'; },
+    logout(){ setTimeout(logoutNow, 0); },
+  };
+  const html = await monthHtml(s.defaultMonth);
+  frameUrl = URL.createObjectURL(new Blob([html], {type: 'text/html'}));
+  $('frame').style.display = 'block';   // laid out (behind the loader) so charts measure the real width
+  $('frame').src = frameUrl;
+  $('card').style.display = 'none';
+  $('lt').textContent = 'Memuat dashboard…'; $('ls').textContent = 'Menyiapkan grafik & tabel';
+}
+function logoutNow(){
+  try { sessionStorage.removeItem(SESSION_KEY); } catch(e){}
+  const fr = $('frame'); fr.style.display = 'none'; fr.removeAttribute('src'); fr.src = 'about:blank';
+  if(frameUrl){ URL.revokeObjectURL(frameUrl); frameUrl = null; }
+  delete window.PFD_HOST;
+  busy = false; $('pw').value = ''; $('err').textContent = ''; $('agree').checked = false;
+  loader(false); $('card').style.display = ''; syncForm();
+}
+function labelOf(s, id){ const m = s.months.find(x => x.id === id); return m ? m.label : id; }
+
+// resume an existing session in this tab
+const existing = sessionGet();
+if(existing){
+  openDashboard(existing).catch(e => { loader(false); try { sessionStorage.removeItem(SESSION_KEY); } catch(_){} $('card').style.display = ''; showErr(e.message || 'Sesi tidak valid, silakan login ulang.'); });
+}
+if(!window.crypto || !crypto.subtle || typeof DecompressionStream === 'undefined'){
+  showErr('Browser tidak didukung. Gunakan Chrome / Edge / Safari / Firefox versi terbaru.'); $('agree').disabled = true;
+}
+syncForm();
+})();
+</script>
+</body>
+</html>

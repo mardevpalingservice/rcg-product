@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Access Log Admin</title>
+<style>
+:root{--ink:#122A46;--navy:#1B4F8A;--sky:#1C7FC7;--teal:#0C8577;--amber:#D97F0A;--garnet:#C13B4A;--line:#E1E7F0;--text:#1A2233;--soft:#5B6478;--faint:#8A93A6;--paper:#F5F8FC;
+  --display:Georgia,'Iowan Old Style',serif;--body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
+*{box-sizing:border-box}body{margin:0;font-family:var(--body);background:var(--paper);color:var(--text);font-size:14px}
+header{background:linear-gradient(135deg,#0E2238,#1E4A78);color:#fff;padding:18px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header .k{font-size:11px;letter-spacing:.1em;color:#9CC4EC;font-weight:700}header h1{font-family:var(--display);margin:2px 0 0;font-size:21px}
+header .sp{flex:1}
+.btn{border:1px solid var(--line);background:#fff;border-radius:6px;padding:8px 13px;font-size:12.5px;font-weight:700;color:var(--soft);cursor:pointer}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}.btn:disabled{opacity:.5;cursor:default}
+header .btn{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);color:#fff}
+main{padding:20px 24px;max-width:1200px;margin:0 auto}
+.login{max-width:420px;margin:60px auto;background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px}
+.login h2{font-family:var(--display);margin:0 0 12px;color:var(--ink)}
+.row{display:flex;gap:8px}.row input{flex:1;padding:10px;border:1px solid var(--line);border-radius:6px;font-size:14px;min-width:0}
+.err{color:var(--garnet);font-size:12.5px;font-weight:600;min-height:18px;margin-top:8px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:18px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px;position:relative;overflow:hidden}
+.kpi:before{content:'';position:absolute;left:0;top:0;right:0;height:4px;background:var(--c)}
+.kpi .l{font-size:11px;font-weight:700;color:var(--faint);letter-spacing:.04em}.kpi .v{font-family:var(--display);font-size:26px;font-weight:700;color:var(--ink);margin-top:4px}
+.tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.tabs button{border:1px solid var(--line);background:#fff;border-radius:18px;padding:7px 14px;font-weight:700;font-size:12.5px;color:var(--soft);cursor:pointer}
+.tabs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tabs input{margin-left:auto;padding:7px 10px;border:1px solid var(--line);border-radius:6px;min-width:200px}
+.wrap{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:auto;max-height:65vh}
+table{width:100%;border-collapse:collapse;font-size:12.8px}th{position:sticky;top:0;background:#EEF3FA;text-align:left;padding:9px 10px;font-size:11px;color:var(--soft);cursor:pointer;white-space:nowrap}
+td{padding:8px 10px;border-top:1px solid #EDF2F8;white-space:nowrap}td.n{text-align:right;font-variant-numeric:tabular-nums}
+.b{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700}.ok{background:#DAF4EE;color:#0A6459}.bad{background:#FCE3E6;color:var(--garnet)}
+.note{font-size:12px;color:var(--faint);margin-top:10px}
+</style>
+</head>
+<body>
+<header><div><div class="k">RACING · PRODUCT FOCUS</div><h1>Access Log Admin</h1></div><span class="sp"></span>
+  <button class="btn" id="refresh" style="display:none" type="button">Refresh</button><button class="btn" id="csv" style="display:none" type="button">Export CSV</button><button class="btn" id="logout" style="display:none" type="button">Logout</button></header>
+<main>
+  <form class="login" id="loginBox">
+    <h2>Masuk Admin</h2>
+    <label for="key" style="font-size:12px;font-weight:700;color:var(--soft)">ADMIN KEY</label>
+    <div class="row" style="margin-top:6px"><input id="key" type="password" autocomplete="off"><button class="btn" type="button" id="eye">Lihat</button></div>
+    <div class="err" id="err"></div>
+    <button class="btn primary" style="width:100%;margin-top:6px" id="go" type="submit">Masuk</button>
+  </form>
+  <section id="dash" style="display:none">
+    <div class="kpis" id="kpis"></div>
+    <div class="tabs"><button type="button" data-t="user" class="on">Per User</button><button type="button" data-t="all">Semua login</button><input id="q" type="search" placeholder="Cari email…"></div>
+    <div class="wrap"><table><thead id="th"></thead><tbody id="tb"></tbody></table></div>
+    <div class="note" id="note"></div>
+  </section>
+</main>
+<script>
+'use strict';
+(function(){
+const KEY = 'pfd_admin_v2';
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let ROWS = [], TAB = 'user', SORT = {k: 'last', d: -1};
+async function endpoint(){ const c = await (await fetch('access-config.json', {cache: 'no-store'})).json(); if(!c.endpoint) throw new Error('Endpoint belum diisi di access-config.json'); return c.endpoint; }
+async function load(key){
+  const ctl = new AbortController(); setTimeout(() => ctl.abort(), 20000);
+  const r = await fetch(await endpoint(), {method: 'POST', signal: ctl.signal, headers: {'Content-Type': 'text/plain;charset=utf-8'}, body: JSON.stringify({action: 'stats', adminKey: key})});
+  const j = await r.json();
+  if(!j.ok) throw new Error(j.error === 'unauthorized' ? 'Admin Key salah.' : j.error === 'rate_limited' ? 'Terlalu banyak percobaan. Tunggu 15 menit.' : 'Gagal: ' + j.error);
+  return j.rows;
+}
+function nf(n){ return n.toLocaleString('id-ID'); }
+function render(){
+  const ok = ROWS.filter(r => r.status === 'Successful Login'), bad = ROWS.filter(r => r.status !== 'Successful Login');
+  const users = new Set(ok.map(r => r.email));
+  const last = ok.reduce((a, r) => r.ts > a ? r.ts : a, '');
+  $('kpis').innerHTML = [['TOTAL UNIQUE USERS', nf(users.size), 'var(--navy)'], ['TOTAL LOGIN / ACCESS', nf(ok.length), 'var(--teal)'],
+    ['LAST ACCESS (WIB)', last ? last.replace('T', ' ').slice(0, 16) : '—', 'var(--sky)'], ['DITOLAK (EMAIL NON-PERUSAHAAN)', nf(bad.length), 'var(--garnet)']]
+    .map(([l, v, c]) => `<div class="kpi" style="--c:${c}"><div class="l">${l}</div><div class="v">${esc(v)}</div></div>`).join('');
+  const q = $('q').value.trim().toLowerCase();
+  let rows, cols;
+  if(TAB === 'user'){
+    const m = new Map();
+    ROWS.forEach(r => { const e = m.get(r.email) || {email: r.email, n: 0, blocked: 0, first: r.ts, last: r.ts}; if(r.status === 'Successful Login') e.n++; else e.blocked++; if(r.ts < e.first) e.first = r.ts; if(r.ts > e.last) e.last = r.ts; m.set(r.email, e); });
+    rows = [...m.values()]; cols = [['email', 'Email'], ['n', 'Total Login', 1], ['blocked', 'Ditolak', 1], ['first', 'Pertama (WIB)'], ['last', 'Terakhir (WIB)']];
+  } else { rows = ROWS.slice(); cols = [['ts', 'Timestamp (WIB)'], ['date', 'Login Date'], ['time', 'Login Time'], ['email', 'Email'], ['status', 'Status']]; if(SORT.k === 'last') SORT = {k: 'ts', d: -1}; }
+  if(!cols.some(c => c[0] === SORT.k)) SORT = {k: cols[cols.length - 1][0], d: -1};
+  if(q) rows = rows.filter(r => r.email.includes(q));
+  rows.sort((a, b) => (a[SORT.k] > b[SORT.k] ? 1 : a[SORT.k] < b[SORT.k] ? -1 : 0) * SORT.d);
+  $('th').innerHTML = '<tr>' + cols.map(c => `<th data-k="${c[0]}">${c[1]}${SORT.k === c[0] ? (SORT.d > 0 ? ' ▲' : ' ▼') : ''}</th>`).join('') + '</tr>';
+  $('tb').innerHTML = rows.map(r => '<tr>' + cols.map(c => { let v = r[c[0]]; if(c[0] === 'status') return `<td><span class="b ${v === 'Successful Login' ? 'ok' : 'bad'}">${esc(v)}</span></td>`;
+    if(typeof v === 'string' && /T\d\d:/.test(v)) v = v.replace('T', ' '); return `<td class="${c[2] ? 'n' : ''}">${esc(c[2] ? nf(v) : v)}</td>`; }).join('') + '</tr>').join('') || `<tr><td colspan="${cols.length}" style="text-align:center;color:var(--faint);padding:30px">Belum ada data.</td></tr>`;
+  $('note').textContent = `${nf(rows.length)} baris · data diambil ${new Date().toLocaleString('id-ID')}. Email adalah isian pengguna sendiri (tidak diverifikasi).`;
+  render.current = {rows, cols};
+}
+async function enter(key, silent){
+  $('err').textContent = ''; $('go').disabled = true;
+  try { ROWS = await load(key); sessionStorage.setItem(KEY, key); $('loginBox').style.display = 'none'; $('dash').style.display = ''; ['refresh', 'csv', 'logout'].forEach(i => $(i).style.display = ''); render(); }
+  catch(e){ if(!silent) $('err').textContent = e.name === 'AbortError' ? 'Waktu habis. Coba lagi.' : (e.message || 'Gagal terhubung.'); sessionStorage.removeItem(KEY); }
+  $('go').disabled = false;
+}
+$('loginBox').addEventListener('submit', e => { e.preventDefault(); const k = $('key').value.trim(); if(k) enter(k); });
+$('eye').addEventListener('click', () => { const k = $('key'), s = k.type === 'password'; k.type = s ? 'text' : 'password'; $('eye').textContent = s ? 'Sembunyi' : 'Lihat'; });
+$('refresh').addEventListener('click', () => { const k = sessionStorage.getItem(KEY); if(k) enter(k); });
+$('logout').addEventListener('click', () => { sessionStorage.removeItem(KEY); location.reload(); });
+$('q').addEventListener('input', render);
+document.querySelector('.tabs').addEventListener('click', e => { const b = e.target.closest('button[data-t]'); if(!b) return; TAB = b.dataset.t; document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b)); render(); });
+$('th').addEventListener('click', e => { const th = e.target.closest('th'); if(!th) return; SORT = {k: th.dataset.k, d: SORT.k === th.dataset.k ? -SORT.d : -1}; render(); });
+$('csv').addEventListener('click', () => {
+  const {rows, cols} = render.current || {rows: [], cols: []};
+  const cell = v => { const s = String(v == null ? '' : v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const csv = '\ufeff' + cols.map(c => cell(c[1])).join(',') + '\n' + rows.map(r => cols.map(c => cell(r[c[0]])).join(',')).join('\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv'})); a.download = 'AccessLog_' + TAB + '_' + new Date().toISOString().slice(0, 10) + '.csv'; a.click();
+});
+const saved = sessionStorage.getItem(KEY); if(saved) enter(saved, true);
+})();
+</script>
+</body>
+</html>
